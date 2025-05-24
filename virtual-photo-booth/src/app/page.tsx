@@ -1,116 +1,179 @@
 'use client'
-import { useState, useEffect } from 'react';
-import { Camera, Users, Sparkles } from 'lucide-react';
+
+import React, { useState } from 'react';
+import { Camera, Users, User, Sparkles, Heart, Zap, Plus, Star, Film } from 'lucide-react';
+import ModeCard from './components/ModeCard';
+import PhotoStrip from './components/PhotoStrip';
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-  
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-    
-    return () => clearTimeout(timer);
-  }, []);
-  
+  const [selectedMode, setSelectedMode] = useState<string>('');
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
-      {/* Loading Screen */}
-      {isLoading ? (
-        <div className="flex flex-col items-center justify-center min-h-screen">
-          <div className="relative">
-            <div className="w-24 h-24 border-8 border-teal-300 border-t-teal-500 rounded-full animate-spin"></div>
-            <Sparkles className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-teal-500" size={24} />
+    <div className="min-h-screen bg-white relative overflow-hidden">
+      {/* Dotted pattern background */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 50% 50%, #14b8a6 1px, transparent 1px)`,
+          backgroundSize: '30px 30px'
+        }} />
+      </div>
+
+      <div className="absolute top-8 left-8 w-16 h-16 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+        <Star className="w-6 h-6 text-white" />
+      </div>
+      <div className="absolute top-8 right-8 w-16 h-16 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+        <Heart className="w-6 h-6 text-white" />
+      </div>
+
+      {/* Brand icons at top */}
+      <div className="absolute top-16 left-1/2 transform -translate-x-1/2 flex space-x-4 z-20">
+        {[Star, Heart, Camera, Film, Sparkles, Zap].map((Icon, i) => (
+          <div key={i} className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-md border border-teal-100">
+            <Icon className="w-4 h-4 text-teal-500" />
           </div>
-          <p className="mt-4 text-xl font-bold text-teal-600">Loading Virtual Together...</p>
-        </div>
-      ) : (
-        <div className="container mx-auto px-4 py-12">
-          {/* Header */}
-          <header className="text-center mb-12">
-            <h1 className="text-5xl font-bold text-teal-600 drop-shadow-md">
-              Virtual Together
-              <span className="inline-block animate-bounce ml-2">📸</span>
-            </h1>
-            <p className="mt-4 text-xl text-blue-600">Create memories, together or solo!</p>
-          </header>
-          
-          <div className="absolute top-0 left-0 w-full overflow-hidden h-16 pointer-events-none">
-            <div className="flex justify-between">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="w-16 h-16 bg-amber-300 rounded-full opacity-20"></div>
-              ))}
-            </div>
-          </div>
-          
-          {/* Main Content: Photobooth Frame */}
-          <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-xl p-6 border-8 border-teal-200">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-blue-600">Choose Your Photobooth Experience</h2>
-              <p className="mt-2 text-gray-600">Strike a pose and create memories that last forever!</p>
-            </div>
-            
-            {/* Options */}
-            <div className="grid md:grid-cols-2 gap-8 mt-8">
-              {/* Solo Option */}
-              <div className="group bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-lg border-2 border-blue-200 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer">
-                <div className="bg-blue-500 text-white p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                  <Camera size={32} />
+        ))}
+      </div>
+
+      {/* Main container */}
+      <div className="relative min-h-screen">
+        
+        {/* Header section */}
+        <div className="pt-36 pb-16 px-6">
+          <div className="max-w-7xl mx-auto">
+            {/* Logo and title row */}
+            <div className="flex items-center justify-between mb-16">
+              <div className="flex items-center space-x-8">
+                <div className="w-24 h-24 bg-gradient-to-br from-teal-500 via-cyan-500 to-teal-600 rounded-3xl flex items-center justify-center shadow-2xl border-4 border-white">
+                  <Camera className="w-12 h-12 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-center text-blue-600 mb-2">Solo Booth</h3>
-                <p className="text-center text-gray-600">Take fun photos with filters, stickers, and frames - just you and your creativity!</p>
-                <div className="mt-6 text-center">
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full transition-colors">
-                    Start Solo Session
-                  </button>
+                <div>
+                  <h1 className="text-5xl font-black text-gray-800 tracking-tight">VIRTUAL</h1>
+                  <h1 className="text-5xl font-black text-teal-500 -mt-3 tracking-tight">TOGETHER</h1>
+                  <p className="text-gray-500 text-sm font-bold tracking-[0.2em] mt-2 uppercase">Personal Photobooth</p>
                 </div>
               </div>
               
-              {/* Together Option */}
-              <div className="group bg-gradient-to-br from-teal-50 to-cyan-50 p-6 rounded-lg border-2 border-teal-200 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer">
-                <div className="bg-teal-500 text-white p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                  <Users size={32} />
-                </div>
-                <h3 className="text-2xl font-bold text-center text-teal-600 mb-2">Group Booth</h3>
-                <p className="text-center text-gray-600">Invite friends and take synchronized photos together from anywhere in the world!</p>
-                <div className="mt-6 text-center">
-                  <button className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-6 rounded-full transition-colors">
-                    Start Group Session
-                  </button>
-                </div>
+              {/* Photo strips on the right */}
+              <div className="hidden md:flex space-x-6">
+                <PhotoStrip stripType={'3x2'} />  
+                <PhotoStrip stripType={'4x1'} />  
+                <PhotoStrip stripType={'6x1'} />  
               </div>
             </div>
-            
-            {/* Decorative Polaroid Stack */}
-            <div className="mt-12 flex justify-center">
-              <div className="relative h-32 w-96">
-                <div className="absolute transform rotate-6 bg-white p-2 border-2 border-gray-200 shadow-md w-28 h-32 top-6 left-12">
-                  <div className="bg-blue-100 h-20 w-full"></div>
-                  <div className="h-8 w-full mt-1 flex justify-center items-center">
-                    <div className="w-16 h-2 bg-gray-300 rounded"></div>
-                  </div>
+
+            {/* Hero text */}
+            <div className="text-center mb-20">
+              <h2 className="text-7xl md:text-9xl font-black text-gray-800 mb-8 tracking-tighter leading-none">
+                CAPTURE
+                <span className="block text-transparent bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-600 bg-clip-text">
+                  MOMENTS
+                </span>
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium">
+                The photobooth experience from anywhere in the world.<br/>
+                <span className="text-lg text-gray-500">Connect with friends or capture perfect memories with yourself and the people around you.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Main content grid */}
+        <div className="px-6 pb-16">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-3 gap-8 items-start">
+              
+              {/* Mode selection cards */}
+              <div className="lg:col-span-2">
+                <div className="grid md:grid-cols-2 gap-8">
+                  {/* Together mode */}
+                  <ModeCard
+                    mode="together"
+                    subtitle="group sessions"
+                    description="Take photos with friends in real-time."
+                    subtext="Create a room and invite friends to join your booth."
+                    icon={Users}
+                    isSelected={selectedMode === 'together'}
+                    onClick={() => {setSelectedMode('together');}}
+                    buttons={[
+                      {
+                        text: "CREATE ROOM",
+                        icon: Plus,
+                        primary: true,
+                        onClick: () => console.log("Create room clicked")
+                      },
+                      {
+                        text: "JOIN ROOM",
+                        primary: false,
+                        onClick: () => console.log("Join room clicked")
+                      }
+                    ]}
+                  />
+
+                  {/* Solo mode */}
+                  <ModeCard
+                    mode="solo"
+                    subtitle="individual sessions"
+                    description="Take perfect photos by yourself or with your friends and family!"
+                    subtext=""
+                    icon={User}
+                    isSelected={selectedMode === 'solo'}
+                    onClick={() => {setSelectedMode('solo');}}
+                    buttons={[
+                      {
+                        text: "START SESSION",
+                        icon: Camera,
+                        primary: true,
+                        onClick: () => console.log("Start session clicked")
+                      }
+                    ]}
+                  />
                 </div>
-                <div className="absolute transform -rotate-3 bg-white p-2 border-2 border-gray-200 shadow-md w-28 h-32 top-4 left-40">
-                  <div className="bg-teal-100 h-20 w-full"></div>
-                  <div className="h-8 w-full mt-1 flex justify-center items-center">
-                    <div className="w-16 h-2 bg-gray-300 rounded"></div>
+              </div>
+
+              {/* Features sidebar */}
+              <div className="lg:col-span-1">
+                <div className="bg-white/95 backdrop-blur-sm p-8 rounded-3xl shadow-2xl border border-gray-200 relative h-full">
+                  <div className="absolute top-4 left-4 w-6 h-6 border-l-3 border-t-3 border-teal-300 rounded-tl-lg"></div>
+                  <div className="absolute top-4 right-4 w-6 h-6 border-r-3 border-t-3 border-teal-300 rounded-tr-lg"></div>
+                  <div className="absolute bottom-4 left-4 w-6 h-6 border-l-3 border-b-3 border-teal-300 rounded-bl-lg"></div>
+                  <div className="absolute bottom-4 right-4 w-6 h-6 border-r-3 border-b-3 border-teal-300 rounded-br-lg"></div>
+                  
+                  <div className="text-center mb-10">
+                    <h3 className="text-3xl font-black text-gray-800 tracking-tight">FEATURES</h3>
+                    <div className="w-16 h-1 bg-gradient-to-r from-teal-500 to-cyan-500 mx-auto mt-2 rounded-full"></div>
                   </div>
-                </div>
-                <div className="absolute transform rotate-12 bg-white p-2 border-2 border-gray-200 shadow-md w-28 h-32 top-0 left-64">
-                  <div className="bg-amber-100 h-20 w-full"></div>
-                  <div className="h-8 w-full mt-1 flex justify-center items-center">
-                    <div className="w-16 h-2 bg-gray-300 rounded"></div>
+                  
+                  <div className="space-y-8">
+                    {[
+                      { icon: Zap, title: "Real-time Sync", desc: "Instant connection with friends worldwide", color: "text-teal-600", bg: "bg-teal-50", border: "border-teal-200" },
+                      { icon: Sparkles, title: "Filters", desc: "Photobooth style effects", color: "text-cyan-600", bg: "bg-cyan-50", border: "border-cyan-200" },
+                      { icon: Heart, title: "Save Memories", desc: "Download your photo strips!", color: "text-teal-500", bg: "bg-teal-50", border: "border-teal-200" },
+                    ].map((feature, i) => (
+                      <div key={i} className="flex items-center space-x-5 group hover:scale-105 transition-all duration-300">
+                        <div className={`w-18 h-18 ${feature.bg} rounded-2xl flex items-center justify-center shadow-lg border-2 ${feature.border} group-hover:shadow-xl transition-all duration-300 relative overflow-hidden flex-shrink-0`}>
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent"></div>
+                          <feature.icon className={`w-7 h-7 ${feature.color} relative z-10`} />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="text-gray-800 font-black text-lg mb-1 tracking-tight">{feature.title}</h4>
+                          <p className="text-gray-500 text-sm font-medium">{feature.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-10 pt-6 border-t border-gray-200">
+                    <div className="text-center">
+                      <div className="inline-block bg-gradient-to-r from-teal-100 to-cyan-100 px-6 py-2 rounded-full border border-teal-200">
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          
-          <footer className="mt-12 text-center text-gray-500">
-            <p>© {new Date().getFullYear()} Virtual Together • Create memories that last forever</p>
-          </footer>
         </div>
-      )}
-    </main>
+      </div>
+    </div>
   );
 }
