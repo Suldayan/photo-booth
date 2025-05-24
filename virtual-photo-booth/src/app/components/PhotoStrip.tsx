@@ -10,7 +10,7 @@ type StripConfig = {
     photoWidth: string;
     photoHeight: string;
     stripWidth: string;
-    layout: 'vertical' | 'horizontal' | 'grid';
+    layout: 'vertical' | 'grid';
     gridCols?: number;
     gridRows?: number;
 };
@@ -63,8 +63,6 @@ export default function PhotoStrip({ stripType = '4x1' }: PhotoStripProps) {
 
         if (config.layout === 'vertical') {
             return <div className="space-y-1">{photos}</div>;
-        } else if (config.layout === 'horizontal') {
-            return <div className="flex space-x-1">{photos}</div>;
         } else if (config.layout === 'grid') {
             return (
                 <div className="grid gap-1" style={{ 
