@@ -1,27 +1,11 @@
-'use client'
-
 import React, { useState } from 'react';
 import { Camera, Users, User, Sparkles, Heart, Zap, Plus, Star, Film } from 'lucide-react';
 import ModeCard from '../ModeCard';
-
-interface HomeProps {
-  onNext: () => void;
-}
-
-interface Feature {
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  desc: string;
-  color: string;
-  bg: string;
-  border: string;
-}
+import { HomeProps, Feature } from '@/app/types/types';
 
 export default function Home({ onNext }: HomeProps) {
   const [selectedMode, setSelectedMode] = useState<string>('');
-
   const brandIcons = [Star, Heart, Camera, Film, Sparkles, Zap];
-  
   const features: Feature[] = [
     { 
       icon: Zap, 

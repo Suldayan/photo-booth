@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Check, Sparkles } from 'lucide-react';
 import PhotoStrip from '../PhotoStrip';
+import { PhotoSelectionProps } from '@/app/types/types';
 
 const stripOptions = [
     { 
@@ -23,8 +24,8 @@ const stripOptions = [
     }
 ];
 
-export default function PhotoSelection() {
-    const [selectedStrip, setSelectedStrip] = useState<'4x1' | '3x2' | '6x1'>('4x1');
+export default function PhotoSelection({ onNext, initialSelection = '4x1' }: PhotoSelectionProps) {
+    const [selectedStrip, setSelectedStrip] = useState<'4x1' | '3x2' | '6x1'>(initialSelection);
     const [hoveredStrip, setHoveredStrip] = useState<string | null>(null);
 
     return (
@@ -125,7 +126,7 @@ export default function PhotoSelection() {
 
                     {/* Action Button */}
                     <div className="text-center">
-                        <button className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 text-white font-bold py-4 px-12 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <button onClick={() => onNext(selectedStrip)} className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 text-white font-bold py-4 px-12 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                             <span className="text-lg tracking-wide">Start Photo Session</span>
                             <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors">
                                 <div className="w-0 h-0 border-l-4 border-l-white border-y-2 border-y-transparent ml-0.5"></div>
