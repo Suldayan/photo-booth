@@ -58,3 +58,13 @@ export interface ModeCardProps {
   buttons: ButtonConfig[];
 }
 
+// Photo Session
+export interface UserSelections {
+  stripType: StripType;
+  background?: string;
+  filter?: string;
+}
+
+export interface PhotoSessionProps {
+    userSelections: UserSelections
+}

@@ -1,13 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { StripType } from "@/app/types/types";
-
-interface PhotoSessionProps {
-    userSelections: {
-        stripType: StripType;
-        background?: string;
-        filter?: string;
-    };
-}
+import { PhotoSessionProps } from "@/app/types/types";
 
 export default function PhotoSession({ userSelections = { stripType: '4x1' } }: PhotoSessionProps) {
     const { stripType } = userSelections;
@@ -24,7 +16,6 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
     const [showCaptureButton, setShowCaptureButton] = useState(true);
     const isStartingRef = useRef(false);
     const [isCountingDown, setIsCountingDown] = useState(false);
-
     
     const getPhotoCount = (stripType: string): number => {
         const [rows, cols] = stripType.split('x').map(Number);
