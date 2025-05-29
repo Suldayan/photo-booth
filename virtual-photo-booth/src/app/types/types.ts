@@ -57,3 +57,4 @@ export interface ModeCardProps {
   onClick: () => void;
   buttons: ButtonConfig[];
 }
+
