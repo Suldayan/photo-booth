@@ -68,3 +68,21 @@ export interface UserSelections {
 export interface PhotoSessionProps {
     userSelections: UserSelections
 }
+
+export interface FilterOptions {
+  name: string;
+  photoAssignment: string | null;
+  css: string;
+  mixBlendMode?: React.CSSProperties['mixBlendMode'];
+  sharpen?: boolean;
+  overlay?: string | null;
+  description: string;
+}
+
+// Editable Photo Strip
+export interface EditablePhotoStripProps {
+  photos: string[];
+  borderColour: string; // Either white or black
+}
+
+

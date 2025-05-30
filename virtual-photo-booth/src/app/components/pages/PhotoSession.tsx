@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { PhotoSessionProps } from "@/app/types/types";
+import { filterOptions } from "@/app/constants/filterOptions";
 
 export default function PhotoSession({ userSelections = { stripType: '4x1' } }: PhotoSessionProps) {
     const { stripType } = userSelections;
@@ -14,8 +15,10 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
     const [cameraReady, setCameraReady] = useState(false);
     const [cameraError, setCameraError] = useState<string | null>(null);
     const [showCaptureButton, setShowCaptureButton] = useState(true);
+    const [showFilterSelection, setShowFilterSelection] = useState(true);
     const isStartingRef = useRef(false);
     const [isCountingDown, setIsCountingDown] = useState(false);
+    const [selectedFilter, setSelectedFilter] = useState(filterOptions[0]);
     
     const getPhotoCount = (stripType: string): number => {
         const [rows, cols] = stripType.split('x').map(Number);
@@ -205,7 +208,7 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
         }
     };
 
-        const startCountdown = () => {
+    const startCountdown = () => {
         console.log('[startCountdown] Called');
         
         if (isCapturing || sessionComplete || !cameraReady || isStartingRef.current || isCountingDown) {
@@ -244,7 +247,26 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
     const handleCaptureClick = () => {
         console.log('[handleCaptureClick] Button clicked');
         setShowCaptureButton(false);
+        setShowFilterSelection(false); // Hide filter selection when session starts
         startCountdown(); 
+    };
+
+    const handleFilterChange = (filter: typeof filterOptions[0]) => {
+        console.log('[handleFilterChange] Filter selected:', filter.name);
+        setSelectedFilter(filter);
+    };
+
+    const getFilterPreviewStyle = () => {
+        let style = selectedFilter.css;
+        
+        // Add overlay effect if present
+        if (selectedFilter.overlay) {
+            // Note: CSS filter overlays are complex to implement in React
+            // This is a simplified approach - in a real app you might use a canvas overlay
+            style += ` ${selectedFilter.overlay}`;
+        }
+        
+        return style;
     };
 
     return (
@@ -275,7 +297,18 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
                                     playsInline
                                     muted
                                     className="w-full h-[500px] object-cover transform scale-x-[-1]"
-                                    style={{ filter: cameraReady ? 'none' : 'blur(2px)' }}
+                                    style={{ filter: cameraReady ? selectedFilter.css : 'blur(2px)' }}
+                                />
+                            )}
+                            
+                            {/* Filter Overlay */}
+                            {selectedFilter.overlay && cameraReady && (
+                                <div 
+                                    className="absolute inset-0 pointer-events-none"
+                                    style={{ 
+                                        background: selectedFilter.overlay,
+                                        mixBlendMode: selectedFilter.mixBlendMode || 'normal'
+                                    }}
                                 />
                             )}
                             
@@ -291,7 +324,7 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
                             
                             {/* Countdown Overlay */}
                             {countdown && (
-                                <div className="absolute inset-0 bg-transparent bg-opacity-70 flex items-center justify-center">
+                                <div className="absolute inset-0 bg-transparent bg-opacity-50 flex items-center justify-center">
                                     <div className="relative">
                                         <div className="text-8xl font-black text-white animate-bounce drop-shadow-2xl">
                                             {countdown}
@@ -311,6 +344,15 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
                                         {photos.length}/{numberOfPhotos}
                                     </span>
                                 </div>
+                                
+                                {/* Current Filter Indicator */}
+                                {selectedFilter.name !== "None" && cameraReady && (
+                                    <div className="bg-purple-500 bg-opacity-90 backdrop-blur-sm px-3 py-2 rounded-full">
+                                        <span className="text-sm font-semibold text-white">
+                                            {selectedFilter.name}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Photo taken indicator */}
@@ -331,23 +373,93 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
                         {/* Control Bar */}
                         <div className="bg-white px-6 py-6 border-t border-gray-100">
                             <div className="flex justify-center">
-                            {showCaptureButton && (
-                                <button
-                                onClick={handleCaptureClick}
-                                disabled={isCapturing || !cameraReady}
-                                className={`
-                                    px-12 py-4 font-bold text-lg tracking-wide transition-all duration-300 transform rounded-full
-                                    ${isCapturing || !cameraReady
-                                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-                                    : 'bg-gradient-to-r from-pink-400 to-purple-400 hover:from-pink-500 hover:to-purple-500 text-white hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl'
-                                    }
-                                `}
-                                >
-                                📸 START
-                                </button>
-                            )}
+                                {showCaptureButton && (
+                                    <button
+                                        onClick={handleCaptureClick}
+                                        disabled={isCapturing || !cameraReady}
+                                        className={`
+                                            px-12 py-4 font-bold text-lg tracking-wide transition-all duration-300 transform rounded-full
+                                            ${isCapturing || !cameraReady
+                                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                                            : 'bg-gradient-to-r from-pink-400 to-purple-400 hover:from-pink-500 hover:to-purple-500 text-white hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl'
+                                            }
+                                        `}
+                                    >
+                                        📸 START
+                                    </button>
+                                )}
                             </div>
                         </div>
+
+                        {/* Filter Selection */}
+                        {showFilterSelection && (
+                            <div className="bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-6 border-t border-gray-100">
+                                <div className="text-center mb-4">
+                                    <h3 className="text-lg font-bold text-gray-800 mb-2">Choose Your Filter</h3>
+                                    <p className="text-sm text-gray-600">Select a filter to enhance your photos</p>
+                                </div>
+                                
+                                {/* Filter Grid */}
+                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+                                    {filterOptions.map((filter, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleFilterChange(filter)}
+                                            disabled={!cameraReady}
+                                            className={`
+                                                relative p-3 rounded-xl border-2 transition-all duration-300 transform
+                                                ${selectedFilter.name === filter.name
+                                                    ? 'border-pink-400 bg-pink-50 scale-105 shadow-lg'
+                                                    : 'border-gray-200 bg-white hover:border-pink-200 hover:scale-102'
+                                                }
+                                                ${!cameraReady ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-md'}
+                                            `}
+                                        >
+                                            {/* Filter Preview Circle */}
+                                            <div className="relative mb-2">
+                                                <div 
+                                                    className={`
+                                                        w-12 h-12 mx-auto rounded-full border-2 border-gray-300 
+                                                        ${filter.name === 'None' 
+                                                            ? 'bg-gradient-to-br from-gray-100 to-gray-200' 
+                                                            : 'bg-gradient-to-br from-pink-200 to-purple-200'
+                                                        }
+                                                    `}
+                                                    style={{
+                                                        filter: filter.css,
+                                                        background: filter.overlay || undefined
+                                                    }}
+                                                />
+                                                {selectedFilter.name === filter.name && (
+                                                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-pink-400 rounded-full flex items-center justify-center">
+                                                        <span className="text-white text-xs font-bold">✓</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            
+                                            {/* Filter Name */}
+                                            <div className="text-center">
+                                                <div className="text-xs font-semibold text-gray-800 mb-1 leading-tight">
+                                                    {filter.name}
+                                                </div>
+                                                <div className="text-xs text-gray-500 leading-tight">
+                                                    {filter.description}
+                                                </div>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                                
+                                {/* Selected Filter Info */}
+                                <div className="mt-4 text-center">
+                                    <div className="inline-block bg-white px-4 py-2 rounded-full border border-pink-200">
+                                        <span className="text-sm font-medium text-gray-700">
+                                            Selected: <span className="text-pink-600 font-semibold">{selectedFilter.name}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -405,20 +517,6 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
                                     )}
                                 </div>
                             ))}
-                        </div>
-
-                        {/* Progress Bar */}
-                        <div className="mb-4">
-                            <div className="flex justify-between text-sm text-gray-500 mb-2">
-                                <span>Progress</span>
-                                <span>{photos.length}/{numberOfPhotos}</span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                                <div 
-                                    className="bg-gradient-to-r from-pink-400 to-purple-400 h-2 rounded-full transition-all duration-500"
-                                    style={{ width: `${(photos.length / numberOfPhotos) * 100}%` }}
-                                ></div>
-                            </div>
                         </div>
 
                         {/* Session Status */}
