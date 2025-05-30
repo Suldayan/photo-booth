@@ -15,6 +15,21 @@ export interface StripOption {
   popular: boolean;
 }
 
+// Photo Strip
+export interface PhotoStripProps {
+    stripType?: '4x1' | '3x2' | '6x1';
+}
+
+export type StripConfig = {
+    photoCount: number;
+    photoWidth: string;
+    photoHeight: string;
+    stripWidth: string;
+    layout: 'vertical' | 'grid';
+    gridCols?: number;
+    gridRows?: number;
+};
+
 // PhotoSelection
 export interface PhotoSelectionProps {
   onNext: (stripType: StripType) => void;
@@ -23,6 +38,13 @@ export interface PhotoSelectionProps {
 
 export interface PhotoSessionProps {
   userSelections: UserSelections;
+}
+
+export interface StripOption {
+    type: StripType;
+    name: string;
+    description: string;
+    popular: boolean;
 }
 
 // Home

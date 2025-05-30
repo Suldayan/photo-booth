@@ -1,6 +1,6 @@
 import { FilterOptions } from "../types/types";
 
-export const filterOptions: FilterOptions[] = [
+export const FILTER_OPTIONS: FilterOptions[] = [
     {
         name: "None",
         photoAssignment: null,

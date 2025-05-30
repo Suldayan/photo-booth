@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { PhotoSessionProps } from "@/app/types/types";
-import { filterOptions } from "@/app/constants/filterOptions";
+import { FILTER_OPTIONS } from "@/app/constants/filterOptions";
 
 export default function PhotoSession({ userSelections = { stripType: '4x1' } }: PhotoSessionProps) {
     const { stripType } = userSelections;
@@ -18,7 +18,7 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
     const [showFilterSelection, setShowFilterSelection] = useState(true);
     const isStartingRef = useRef(false);
     const [isCountingDown, setIsCountingDown] = useState(false);
-    const [selectedFilter, setSelectedFilter] = useState(filterOptions[0]);
+    const [selectedFilter, setSelectedFilter] = useState(FILTER_OPTIONS[0]);
     
     const getPhotoCount = (stripType: string): number => {
         const [rows, cols] = stripType.split('x').map(Number);
@@ -251,7 +251,7 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
         startCountdown(); 
     };
 
-    const handleFilterChange = (filter: typeof filterOptions[0]) => {
+    const handleFilterChange = (filter: typeof FILTER_OPTIONS[0]) => {
         console.log('[handleFilterChange] Filter selected:', filter.name);
         setSelectedFilter(filter);
     };
@@ -401,7 +401,7 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
                                 
                                 {/* Filter Grid */}
                                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-                                    {filterOptions.map((filter, index) => (
+                                    {FILTER_OPTIONS.map((filter, index) => (
                                         <button
                                             key={index}
                                             onClick={() => handleFilterChange(filter)}

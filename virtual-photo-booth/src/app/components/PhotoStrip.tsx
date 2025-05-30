@@ -1,48 +1,10 @@
 import { Camera } from "lucide-react";
 import React from "react";
-
-interface PhotoStripProps {
-    stripType?: '4x1' | '3x2' | '6x1';
-}
-
-type StripConfig = {
-    photoCount: number;
-    photoWidth: string;
-    photoHeight: string;
-    stripWidth: string;
-    layout: 'vertical' | 'grid';
-    gridCols?: number;
-    gridRows?: number;
-};
-
-const stripConfigs: Record<string, StripConfig> = {
-    '4x1': {
-        photoCount: 4,
-        photoWidth: 'w-16',
-        photoHeight: 'h-20',
-        stripWidth: 'w-20',
-        layout: 'vertical'
-    },
-    '3x2': {
-        photoCount: 6,
-        photoWidth: 'w-14',
-        photoHeight: 'h-16',
-        stripWidth: 'w-32',
-        layout: 'grid',
-        gridCols: 2,
-        gridRows: 3
-    },
-    '6x1': {
-        photoCount: 6,
-        photoWidth: 'w-14',
-        photoHeight: 'h-18',
-        stripWidth: 'w-18',
-        layout: 'vertical'
-    },
-};
+import { PhotoStripProps } from "../types/types";
+import { STRIP_CONFIGS } from "../constants/stripConfigOptions";
 
 export default function PhotoStrip({ stripType = '4x1' }: PhotoStripProps) {
-    const config = stripConfigs[stripType];
+    const config = STRIP_CONFIGS[stripType];
     
     const renderPhotos = () => {
         const photos = Array.from({ length: config.photoCount }, (_, i) => (

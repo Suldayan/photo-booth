@@ -2,27 +2,7 @@ import React, { useState } from 'react';
 import { Check, Sparkles } from 'lucide-react';
 import PhotoStrip from '../PhotoStrip';
 import { PhotoSelectionProps } from '@/app/types/types';
-
-const stripOptions = [
-    { 
-        type: '4x1' as const, 
-        name: 'Classic Strip', 
-        description: 'Traditional vertical photo strip',
-        popular: true
-    },
-    { 
-        type: '3x2' as const, 
-        name: 'Grid', 
-        description: 'Grid layout for 6 total photos',
-        popular: false
-    },
-    { 
-        type: '6x1' as const, 
-        name: 'Long Strip', 
-        description: 'Extended vertical strip',
-        popular: false
-    }
-];
+import { STRIP_OPTIONS } from '@/app/constants/stripOptions';
 
 export default function PhotoSelection({ onNext, initialSelection = '4x1' }: PhotoSelectionProps) {
     const [selectedStrip, setSelectedStrip] = useState<'4x1' | '3x2' | '6x1'>(initialSelection);
@@ -69,7 +49,7 @@ export default function PhotoSelection({ onNext, initialSelection = '4x1' }: Pho
                 {/* Strip Selection Grid */}
                 <div className="max-w-4xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                        {stripOptions.map((option) => (
+                        {STRIP_OPTIONS.map((option) => (
                             <div
                                 key={option.type}
                                 className={`relative group cursor-pointer transition-all duration-300 ${
@@ -137,7 +117,7 @@ export default function PhotoSelection({ onNext, initialSelection = '4x1' }: Pho
                         <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
                             <span>Selected style:</span>
                             <span className="font-medium text-pink-500">
-                                {stripOptions.find(opt => opt.type === selectedStrip)?.name}
+                                {STRIP_OPTIONS.find(opt => opt.type === selectedStrip)?.name}
                             </span>
                         </div>
                     </div>
