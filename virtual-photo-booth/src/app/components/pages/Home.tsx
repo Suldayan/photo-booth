@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 import { Camera, Users, User, Sparkles, Heart, Zap, Plus, Star, Film } from 'lucide-react';
 import ModeCard from '../ModeCard';
-import { HomeProps, Feature } from '@/app/types/types';
+
+interface HomeProps {
+  onNext: () => void;
+}
+
+export interface Feature {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  desc: string;
+  color: string;
+  bg: string;
+  border: string;
+}
 
 export default function Home({ onNext }: HomeProps) {
   const [selectedMode, setSelectedMode] = useState<string>('');
@@ -61,18 +73,6 @@ export default function Home({ onNext }: HomeProps) {
       </div>
       <div className="absolute top-8 right-8 w-16 h-16 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
         <Heart className="w-6 h-6 text-white" />
-      </div>
-
-      {/* Brand icons at top */}
-      <div className="absolute top-16 left-1/2 transform -translate-x-1/2 flex space-x-4 z-20">
-        {brandIcons.map((Icon, index) => (
-          <div 
-            key={index} 
-            className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-md border border-teal-100"
-          >
-            <Icon className="w-4 h-4 text-teal-500" />
-          </div>
-        ))}
       </div>
 
       {/* Main container */}

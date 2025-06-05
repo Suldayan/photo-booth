@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { Check, Sparkles } from 'lucide-react';
 import PhotoStrip from '../PhotoStrip';
-import { PhotoSelectionProps } from '@/app/types/types';
 import { STRIP_OPTIONS } from '@/app/constants/stripOptions';
+import { StripType } from '@/app/types/types';
+
+interface PhotoSelectionProps {
+  onNext: (stripType: StripType) => void;
+  initialSelection?: StripType;
+}
 
 export default function PhotoSelection({ onNext, initialSelection = '4x1' }: PhotoSelectionProps) {
     const [selectedStrip, setSelectedStrip] = useState<'4x1' | '3x2' | '6x1'>(initialSelection);

@@ -1,8 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { PhotoSessionProps } from "@/app/types/types";
 import { FILTER_OPTIONS } from "@/app/constants/filterOptions";
+import { UserSelections } from "@/app/types/types";
 
-export default function PhotoSession({ userSelections = { stripType: '4x1' } }: PhotoSessionProps) {
+interface PhotoSessionProps {
+    userSelections: UserSelections;
+    onNext: (photos: string[]) => void;
+}
+
+export default function PhotoSession({ onNext, userSelections = { stripType: '4x1' } }: PhotoSessionProps) {
     const { stripType } = userSelections;
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -247,7 +252,7 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
     const handleCaptureClick = () => {
         console.log('[handleCaptureClick] Button clicked');
         setShowCaptureButton(false);
-        setShowFilterSelection(false); // Hide filter selection when session starts
+        setShowFilterSelection(false); 
         startCountdown(); 
     };
 
@@ -256,18 +261,11 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
         setSelectedFilter(filter);
     };
 
-    const getFilterPreviewStyle = () => {
-        let style = selectedFilter.css;
-        
-        // Add overlay effect if present
-        if (selectedFilter.overlay) {
-            // Note: CSS filter overlays are complex to implement in React
-            // This is a simplified approach - in a real app you might use a canvas overlay
-            style += ` ${selectedFilter.overlay}`;
+    useEffect(() => {
+        if (sessionComplete) {
+            onNext(photos);
         }
-        
-        return style;
-    };
+    }, [sessionComplete]);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50 flex items-center justify-center p-4">
@@ -518,17 +516,6 @@ export default function PhotoSession({ userSelections = { stripType: '4x1' } }: 
                                 </div>
                             ))}
                         </div>
-
-                        {/* Session Status */}
-                        {sessionComplete && (
-                            <div className="text-center">
-                                <div className="bg-gradient-to-r from-green-400 to-emerald-400 text-white px-6 py-3 font-bold rounded-full inline-flex items-center gap-2 shadow-lg">
-                                    <span>✨</span>
-                                    <span>COMPLETED!</span>
-                                    <span>✨</span>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>

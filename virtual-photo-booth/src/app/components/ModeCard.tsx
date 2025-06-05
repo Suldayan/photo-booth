@@ -1,5 +1,16 @@
 import React from "react";
-import { ModeCardProps } from "../types/types";
+import { ButtonConfig } from "../types/types";
+
+export interface ModeCardProps {
+  mode: string;
+  subtitle: string;
+  description: string;
+  subtext: string;
+  icon: React.ComponentType<{ className?: string }>;
+  isSelected: boolean;
+  onClick: () => void;
+  buttons: ButtonConfig[];
+}
 
 export default function ModeCard({ mode, subtitle, description, subtext, icon: Icon, isSelected, onClick, buttons }: ModeCardProps) {
   return (

@@ -1,8 +1,10 @@
 'use client';
+
 import { useState } from 'react';
 import Home from './components/pages/Home';
 import PhotoSelection from './components/pages/PhotoSelection';
 import PhotoSession from './components/pages/PhotoSession';
+import PhotoReview from './components/PhotoReview';
 import { StripType, UserSelections } from './types/types';
 
 export default function Page() {
@@ -10,6 +12,7 @@ export default function Page() {
   const [userSelections, setUserSelections] = useState<UserSelections>({
     stripType: '4x1'
   });
+  const [userPhotos, setUserPhotos] = useState<string[]>([]);
 
   const handleStepChange = (step: string) => {
     setCurrentStep(step);
@@ -27,6 +30,15 @@ export default function Page() {
     setCurrentStep('photo-session');
   };
 
+  const updateUserPhoto = (photos: string[]) => {
+    setUserPhotos(photos)  
+  }
+
+  const handleUserPhotoNext = (photos: string[]) => {
+    updateUserPhoto(photos)
+    setCurrentStep('photo-review');
+  }
+
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 'home':
@@ -39,7 +51,9 @@ export default function Page() {
           />
         );
       case 'photo-session':
-        return <PhotoSession userSelections={userSelections} />;
+        return <PhotoSession onNext={handleUserPhotoNext} userSelections={userSelections} />;
+      case 'photo-review':
+        return <PhotoReview photos={userPhotos} />
       default:
         return <Home onNext={() => handleStepChange('photo-selection')} />;
     }
