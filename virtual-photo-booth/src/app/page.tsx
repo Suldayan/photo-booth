@@ -1,11 +1,21 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Home from './components/pages/Home';
-import PhotoSelection from './components/pages/PhotoSelection';
-import PhotoSession from './components/pages/PhotoSession';
-import PhotoReview from './components/PhotoReview';
 import { StripType, UserSelections } from './types/types';
+
+const PhotoSelection = dynamic(() => import('./components/pages/PhotoSelection'), {
+  loading: () => <div className=' bg-white'></div>
+})
+
+const PhotoSession = dynamic(() => import('./components/pages/PhotoSession'), {
+  loading: () => <div className='bg-white'></div>
+})
+
+const PhotoReview = dynamic(() => import('./components/pages/PhotoReview'), {
+  loading: () => <div className='bg-white'></div>
+})
 
 export default function Page() {
   const [currentStep, setCurrentStep] = useState<string>('home');
@@ -53,7 +63,7 @@ export default function Page() {
       case 'photo-session':
         return <PhotoSession onNext={handleUserPhotoNext} userSelections={userSelections} />;
       case 'photo-review':
-        return <PhotoReview photos={userPhotos} />
+        return <PhotoReview photos={userPhotos} userSelections={userSelections}/>
       default:
         return <Home onNext={() => handleStepChange('photo-selection')} />;
     }

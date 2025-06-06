@@ -42,7 +42,7 @@ export default function PhotoSelection({ onNext, initialSelection = '4x1' }: Pho
                         <div className="w-1 h-8 bg-gradient-to-b from-rose-400 to-orange-400 rounded-full"></div>
                     </div>
                     <p className="text-lg text-gray-600 max-w-md mx-auto leading-relaxed">
-                        Select your preferred photo strip layout to create lasting memories
+                        Select your preferred photo strip layout
                     </p>
                     <div className="flex items-center justify-center gap-2 mt-4">
                         <Sparkles className="w-4 h-4 text-pink-400" />

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { FILTER_OPTIONS } from "@/app/constants/filterOptions";
 import { UserSelections } from "@/app/types/types";
 
@@ -495,7 +496,7 @@ export default function PhotoSession({ onNext, userSelections = { stripType: '4x
                                 >
                                     {photos[index] ? (
                                         <>
-                                            <img
+                                            <Image
                                                 src={photos[index]}
                                                 alt={`Photo ${index + 1}`}
                                                 className="w-full h-full object-cover"

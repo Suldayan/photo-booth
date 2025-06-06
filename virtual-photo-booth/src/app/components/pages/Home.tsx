@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Camera, Users, User, Sparkles, Heart, Zap, Plus, Star, Film } from 'lucide-react';
+import { Camera, Users, User, Sparkles, Heart, Zap, Plus } from 'lucide-react';
 import ModeCard from '../ModeCard';
 
 interface HomeProps {
@@ -17,7 +17,6 @@ export interface Feature {
 
 export default function Home({ onNext }: HomeProps) {
   const [selectedMode, setSelectedMode] = useState<string>('');
-  const brandIcons = [Star, Heart, Camera, Film, Sparkles, Zap];
   const features: Feature[] = [
     { 
       icon: Zap, 
@@ -67,17 +66,8 @@ export default function Home({ onNext }: HomeProps) {
         />
       </div>
 
-      {/* Corner decorative elements */}
-      <div className="absolute top-8 left-8 w-16 h-16 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
-        <Star className="w-6 h-6 text-white" />
-      </div>
-      <div className="absolute top-8 right-8 w-16 h-16 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
-        <Heart className="w-6 h-6 text-white" />
-      </div>
-
       {/* Main container */}
       <div className="relative min-h-screen">
-        
         {/* Header section */}
         <div className="pt-36 pb-16 px-6">
           <div className="max-w-7xl mx-auto">
@@ -88,26 +78,12 @@ export default function Home({ onNext }: HomeProps) {
                   <Camera className="w-12 h-12 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-5xl font-black text-gray-800 tracking-tight">VIRTUAL</h1>
-                  <h1 className="text-5xl font-black text-teal-500 -mt-3 tracking-tight">TOGETHER</h1>
-                  <p className="text-gray-500 text-sm font-bold tracking-[0.2em] mt-2 uppercase">Personal Photobooth</p>
+                  <h1 className="text-5xl font-black text-gray-800 tracking-tight">CHINGU</h1>
+                  <h1 className="text-5xl font-black text-teal-500 -mt-3 tracking-tight">BOOTH</h1>
+                  <p className="text-gray-500 text-sm font-bold tracking-[0.2em] mt-2 uppercase">Online Photobooth</p>
                 </div>
               </div>
-            </div>
-
-            {/* Hero text */}
-            <div className="text-center mb-20">
-              <h2 className="text-7xl md:text-9xl font-black text-gray-800 mb-8 tracking-tighter leading-none">
-                CAPTURE
-                <span className="block text-transparent bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-600 bg-clip-text">
-                  MOMENTS
-                </span>
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium">
-                The photobooth experience from anywhere in the world.<br/>
-                <span className="text-lg text-gray-500">Connect with friends or capture perfect memories with yourself and the people around you.</span>
-              </p>
-            </div>
+            </div> 
           </div>
         </div>
 
