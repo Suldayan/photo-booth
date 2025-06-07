@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { FILTER_OPTIONS } from "@/app/constants/filterOptions";
 import { UserSelections } from "@/app/types/types";
+import FilterCard from "../FilterCard";
 
 interface PhotoSessionProps {
     userSelections: UserSelections;
@@ -401,51 +402,14 @@ export default function PhotoSession({ onNext, userSelections = { stripType: '4x
                                 {/* Filter Grid */}
                                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
                                     {FILTER_OPTIONS.map((filter, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => handleFilterChange(filter)}
-                                            disabled={!cameraReady}
-                                            className={`
-                                                relative p-3 rounded-xl border-2 transition-all duration-300 transform
-                                                ${selectedFilter.name === filter.name
-                                                    ? 'border-pink-400 bg-pink-50 scale-105 shadow-lg'
-                                                    : 'border-gray-200 bg-white hover:border-pink-200 hover:scale-102'
-                                                }
-                                                ${!cameraReady ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-md'}
-                                            `}
-                                        >
-                                            {/* Filter Preview Circle */}
-                                            <div className="relative mb-2">
-                                                <div 
-                                                    className={`
-                                                        w-12 h-12 mx-auto rounded-full border-2 border-gray-300 
-                                                        ${filter.name === 'None' 
-                                                            ? 'bg-gradient-to-br from-gray-100 to-gray-200' 
-                                                            : 'bg-gradient-to-br from-pink-200 to-purple-200'
-                                                        }
-                                                    `}
-                                                    style={{
-                                                        filter: filter.css,
-                                                        background: filter.overlay || undefined
-                                                    }}
-                                                />
-                                                {selectedFilter.name === filter.name && (
-                                                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-pink-400 rounded-full flex items-center justify-center">
-                                                        <span className="text-white text-xs font-bold">✓</span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                            
-                                            {/* Filter Name */}
-                                            <div className="text-center">
-                                                <div className="text-xs font-semibold text-gray-800 mb-1 leading-tight">
-                                                    {filter.name}
-                                                </div>
-                                                <div className="text-xs text-gray-500 leading-tight">
-                                                    {filter.description}
-                                                </div>
-                                            </div>
-                                        </button>
+                                        <FilterCard 
+                                            key={filter.name}
+                                            cameraFilter={filter}
+                                            index={index}
+                                            isCameraReady={cameraReady}
+                                            selectedFilter={selectedFilter}          
+                                            onFilterChange={handleFilterChange}  
+                                        />
                                     ))}
                                 </div>
                                 
