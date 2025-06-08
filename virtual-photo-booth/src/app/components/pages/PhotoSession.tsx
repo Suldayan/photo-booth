@@ -463,6 +463,7 @@ export default function PhotoSession({ onNext, userSelections = { stripType: '4x
                                             <Image
                                                 src={photos[index]}
                                                 alt={`Photo ${index + 1}`}
+                                                fill
                                                 className="w-full h-full object-cover"
                                             />
                                             <div className="absolute top-1 right-1 bg-pink-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">
