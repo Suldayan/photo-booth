@@ -6,14 +6,17 @@ import Home from './components/pages/Home';
 import { StripType, UserSelections } from './types/types';
 
 const PhotoSelection = dynamic(() => import('./components/pages/PhotoSelection'), {
+  ssr: false,
   loading: () => <div className=' bg-white'></div>
 })
 
 const PhotoSession = dynamic(() => import('./components/pages/PhotoSession'), {
+  ssr: false,
   loading: () => <div className='bg-white'></div>
 })
 
 const PhotoReview = dynamic(() => import('./components/pages/PhotoReview'), {
+  ssr: false,
   loading: () => <div className='bg-white'></div>
 })
 
